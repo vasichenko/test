@@ -1,1 +1,44 @@
+name: ETH Price Monitor
 
+on:
+  schedule:
+    # Запуск кожні 4 години
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Кнопка для ручного запуску
+
+jobs:
+  make-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch ETH Price and Update Log
+        run: |
+          # 1. Рандомна затримка до 30 хвилин
+          sleep $((RANDOM % 1800))
+          
+          # 2. Шанс 20% на пропуск (для імітації людської поведінки)
+          if [ $((RANDOM % 10)) -lt 2 ]; then
+            echo "Slot skipped for organic activity look."
+            exit 0
+          fi
+
+          # 3. Отримуємо ціну ETH (тільки одну монету)
+          ETH=$(curl -s "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd" | jq -r '.ethereum.usd')
+
+          # 4. Формуємо запис
+          TIMESTAMP=$(date "+%Y-%m-%d %H:%M")
+          LOG_ENTRY="[$TIMESTAMP] ETH Price: \$$ETH USD"
+          
+          # 5. Оновлюємо файл: додаємо запис і тримаємо останні 50 рядків
+          echo "$LOG_ENTRY" >> activity.txt
+          echo "$(tail -n 50 activity.txt)" > activity.txt
+
+          # 6. Налаштування Git та Пуш
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          
+          git add activity.txt
+          git commit -m "update: eth price feed at $TIMESTAMP [skip ci]"
+          git push
