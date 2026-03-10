@@ -20,7 +20,7 @@ jobs:
           
           # 2. Шанс 20% на пропуск (для імітації людської поведінки)
           if [ $((RANDOM % 10)) -lt 2 ]; then
-            echo "Slot skipped for organic activity look."
+            echo "Slot skipped for organic eth look."
             exit 0
           fi
 
@@ -32,13 +32,13 @@ jobs:
           LOG_ENTRY="[$TIMESTAMP] ETH Price: \$$ETH USD"
           
           # 5. Оновлюємо файл: додаємо запис і тримаємо останні 50 рядків
-          echo "$LOG_ENTRY" >> activity.txt
-          echo "$(tail -n 50 activity.txt)" > activity.txt
+          echo "$LOG_ENTRY" >> eth.txt
+          echo "$(tail -n 50 eth.txt)" > eth.txt
 
           # 6. Налаштування Git та Пуш
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           
-          git add activity.txt
+          git add eth.txt
           git commit -m "update: eth price feed at $TIMESTAMP [skip ci]"
           git push
