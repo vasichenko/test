@@ -16,7 +16,7 @@ jobs:
       - name: Fetch ETH Price and Update Log
         run: |
           # 1. Рандомна затримка до 30 хвилин
-          sleep $((RANDOM % 1800))
+          sleep $((RANDOM % 800))
           
           # 2. Шанс 20% на пропуск (для імітації людської поведінки)
           if [ $((RANDOM % 10)) -lt 2 ]; then
@@ -36,7 +36,7 @@ jobs:
           echo "$(tail -n 50 eth.txt)" > eth.txt
 
           # 6. Налаштування Git та Пуш
-          git config --local user.email "action@github.com"
+          git config --local user.email "vasilijtarasov239@gmail.com"
           git config --local user.name "GitHub Action Bot"
           
           git add eth.txt
