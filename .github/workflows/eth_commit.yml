@@ -3,7 +3,7 @@ name: ETH Price Monitor
 on:
   schedule:
     # Запуск кожні 4 години
-    - cron: '0 */4 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch: # Кнопка для ручного запуску
 
 jobs:
