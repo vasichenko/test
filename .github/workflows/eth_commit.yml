@@ -1,9 +1,9 @@
-name: ETH Price Monitor
+name: ETH cena
 
 on:
   schedule:
     # Запуск кожні 4 години
-    - cron: '0 */6 * * *'
+    - cron: '20 */8 * * *'
   workflow_dispatch: # Кнопка для ручного запуску
 
 jobs:
